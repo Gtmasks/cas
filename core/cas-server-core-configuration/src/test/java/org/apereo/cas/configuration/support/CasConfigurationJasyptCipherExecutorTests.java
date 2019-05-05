@@ -88,7 +88,7 @@ public class CasConfigurationJasyptCipherExecutorTests {
             assertTrue(isAlgorithmFunctional(algorithm));
         }
         for (val algorithm : badAlgorithms) {
-            Assertions.assertThrows(NullPointerException.class, () -> isAlgorithmFunctional(algorithm));
+            assertThrows(NullPointerException.class, () -> isAlgorithmFunctional(algorithm));
         }
     }
 
