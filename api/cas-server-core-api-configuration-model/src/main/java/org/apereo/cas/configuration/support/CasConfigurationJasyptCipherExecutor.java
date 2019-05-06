@@ -2,6 +2,7 @@ package org.apereo.cas.configuration.support;
 
 import org.apereo.cas.CipherExecutor;
 
+import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
@@ -11,8 +12,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.core.env.Environment;
 
 import java.security.Security;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 /**
  * This is {@link CasConfigurationJasyptCipherExecutor}.
@@ -45,7 +45,7 @@ public class CasConfigurationJasyptCipherExecutor implements CipherExecutor<Stri
     /**
      * List version of blacklisted algorithms (due to Jasypt 1.9.2 bug).
      */
-    public static final List ALGORITHM_BLACKLIST_LIST = Arrays.asList(ALGORITHM_BLACKLIST);
+    public static final Set<String> ALGORITHM_BLACKLIST_SET = ImmutableSet.copyOf(ALGORITHM_BLACKLIST);
 
     /**
      * The Jasypt instance.
@@ -89,7 +89,7 @@ public class CasConfigurationJasyptCipherExecutor implements CipherExecutor<Stri
      */
     public void setAlgorithm(final String alg) {
         if (StringUtils.isNotBlank(alg)) {
-            if (ALGORITHM_BLACKLIST_LIST.contains(alg)) {
+            if (ALGORITHM_BLACKLIST_SET.contains(alg)) {
                 LOGGER.warn("Configured Jasypt algorithm [{}] doesn't work for decryption due to Jasypt bug", alg);
             }
             LOGGER.debug("Configured Jasypt algorithm [{}]", alg);

@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.core.env.Environment;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,13 +79,12 @@ public class CasConfigurationJasyptCipherExecutorTests {
     @Test
     public void verifyAlgorithms() {
         val algorithms = (Set<String>) AlgorithmRegistry.getAllPBEAlgorithms();
-        val badAlgorithms = new HashSet<String>(CasConfigurationJasyptCipherExecutor.ALGORITHM_BLACKLIST_LIST);
-        val goodAlgorithms = Sets.difference(algorithms, badAlgorithms);
+        val goodAlgorithms = Sets.difference(algorithms, CasConfigurationJasyptCipherExecutor.ALGORITHM_BLACKLIST_SET);
 
         for (val algorithm : goodAlgorithms) {
             assertTrue(isAlgorithmFunctional(algorithm));
         }
-        for (val algorithm : badAlgorithms) {
+        for (val algorithm : CasConfigurationJasyptCipherExecutor.ALGORITHM_BLACKLIST_SET) {
             assertThrows(NullPointerException.class, () -> isAlgorithmFunctional(algorithm));
         }
     }
